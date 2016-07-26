@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="/images/favicon.ico">
+    <title>云盘</title>
+
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <!-- TODC Bootstrap theme -->
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+
+  </head>
+
+
+  <body>
+
+    <nav class="navbar navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/users/0"><img alt="Brand" src="/images/favicon.ico"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" style="padding-left: 200px;">
+
+          <form class="navbar-form  navbar-left">
+            <input type="text" class="form-control" placeholder="Search...">
+            <button type="submit" class="btn btn-default">搜索</button>
+          </form>
+          
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><%- user_name %></a></li>
+            <li><a href="/logout">注销</a></li>
+            
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          
+          <a class="navbar-brand" href="/users/0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home</a>
+        </div>
+        <form id="file_upload" enctype="multipart/form-data" action='/users/<%- path %>' method= "post">
+          <input type="file" name="new_file" id="file_input" >
+          <input type="text" name ="file_md5" id="file_md5">
+        </form>
+
+      </div>
+    </nav>
+    
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="sidebar">
+
+          
+                    
+          <ul class="nav nav-sidebar">
+            <li><button type="button" class="btn btn-sm btn-danger" id="paste_file"> &nbsp;&nbsp;&nbsp;粘贴&nbsp;&nbsp;&nbsp; </button></li>
+            <li><button type="button" class="btn btn-sm btn-danger" id="new-file"> &nbsp;&nbsp;&nbsp;上传文件&nbsp;&nbsp;&nbsp;</button></li>
+            
+            <li><button type="button" class="btn btn-sm btn-danger" id="new_folder"> &nbsp;&nbsp;&nbsp;新建文件夹&nbsp;&nbsp;&nbsp; </button></li>
+          </ul>
+          <div id='pro'>
+            <div id='progress'></div>
+            <p id='percent'></p>
+          </div>
+          <form class="new_dir" id='new_folder_form' method="get">
+            <input type="text" name="new_folder" id='new_folder_input' placeholder='请输入文件夹名' required autofocus>
+            <button id='new_folder_ok'>确认</button>
+            <button id='new_folder_off'>取消</button>
+          </form>
+
+        </div>
+
+        <div class="main">
+          
+          <div class="nav nav-main" id = "nav_main">
+
+          <% for(var i = 0; i< folder_list.length; i++){ %>
+
+            <form class="file_view" id= "folder_view<%- i %>" method="post">
+              
+              &nbsp;&nbsp;<a href="/users/<%- folder_list[i].dir_id %>"><img src="/images/folder-yellow.png"></a>
+              <a class='folder_len' id='filename<%- i %>' href="/users/<%- folder_list[i].dir_id %>"><%- folder_list[i].dir_name %></a>
+              <input type="text" name="rename_folder_old" class="rename_hidden" id="rename_input_old<%- i %>">
+              <input type="text" name="rename_folder" class="rename_hidden_folder" id="rename_input<%- i %>" placeholder='<%- folder_list[i].dir_name %>' required autofocus >
+              <button class="rename_hidden" id='ok_btn<%- i %>' onclick="rename_submit(event, <%- i %>, '<%- folder_list[i].dir_name %>')">确认</button>
+              <button class="rename_hidden" id='off_btn<%- i %>' onclick="rename_off(event,<%- i %>)">取消</button>
+              
+              <a href='' class="rename_btn" id="rename_btn<%- i %>" onclick="rename_btn(event,<%- i %>)">重命名</a>
+              <a href="" class="delete_file" id="delete_folder<%- i %>" onclick="delete_folder(event,'<%- folder_list[i].dir_name %>')">删除</a>
+            </form>
+          <% } %>
+
+          <% for(let j = 0; j< file_list.length; j++){ %>
+
+            <form class="file_view" id= "folder_view<%- i+j %>" method="post">
+              
+              &nbsp;&nbsp;<img src="/images/unknown.jpg">&nbsp;&nbsp;&nbsp;&nbsp;
+              <a class='file_len' id='filename<%- i+j %>'><%- file_list[j].file_name %></a>
+              <input type="text" name="rename_file_old" class="rename_hidden" id="rename_input_old<%- i+j %>">
+              <input type="text" name="rename_file" class="rename_hidden_file" id="rename_input<%- i+j %>" value='<%- file_list[j].file_name %>' required autofocus>
+              <button class="rename_hidden" id='ok_btn<%- i+j %>' onclick="rename_submit(event, <%- i+j %>, '<%- file_list[j].file_name %>')">确认</button>
+              <button class="rename_hidden" id='off_btn<%- i+j %>' onclick="rename_off(event,<%- i+j %>)">取消</button>
+              <a href="/download?file_md5=<%- file_list[j].file_MD5 %>&file_name=<%- file_list[j].file_name %>" class="download_link"><img src="/images/download.jpg"></a>
+              <a href='' class="rename_btn" id="rename_btn<%- i+j %>" onclick="rename_btn(event,<%- i+j %>)">                      重命名</a>
+              <a href="" class="delete_file" id="delete_file<%- j %>" onclick="delete_file(event,'<%- file_list[j].file_name %>')">删除</a>
+              <a href="" class="copy_file" id="copy_file<%- j %>"     onclick="copy_file(event, '<%- file_list[j].file_name %>')"> 复制</a>
+              <a href="" class="paste_file" id="paste_file<%- j %>"   onclick="paste_file(event, '<%- file_list[j].file_name %>')">剪切</a>
+              
+            </form>
+          <% } %>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    
+    <script type="text/javascript" src="/javascripts/jquery-1.12.4.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/spark-md5.js"></script>
+    <script src="/javascripts/myjs.js"></script>
+    
+  </body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link rel="icon" href="/images/favicon.ico">
+    <title>我的云端硬盘</title>
+
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/signin.css" rel="stylesheet">
+    <!-- TODC Bootstrap theme -->
+
+
+  </head>
+
+
+  <body>
+
+    <div class="container">
+
+      <h2 class=" text-center">欢迎注册</h2>
+
+      <div class="card card-signin">
+        
+        <form class="form-signin"  id='register_form' method="POST" action="/register">     
+          
+          <p align="center" id="message" style="color:red"><%- message %></p>
+          <label class="sr-only">Username</label>
+          <input type="username" name="username"  id='username_input' class="form-control" placeholder="用户名" required autofocus>
+          <label  class="sr-only">Password</label>
+          <input type="password" name="password" id='password_input' class="form-control" placeholder="密码" required>
+          <input type="password" name="password-repeat" id='password_input_repeat' class="form-control" placeholder="确认密码" required>
+          <button class="btn btn-lg btn-primary btn-block" id='btn_submit' type="submit" >注册</button>
+        </form>
+        <div>
+        <a href="/login"><h4 class = "text-center">已有账号？登录</h4></a>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+  <script type="text/javascript" src="/javascripts/jquery-1.12.4.js"></script>
+  <script src="/javascripts/register.js"></script>
+  </body>
+</html>

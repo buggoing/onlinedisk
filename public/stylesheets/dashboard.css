@@ -1,0 +1,158 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.mynav-btn{
+  background: #1bffe9;
+}
+
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+ 
+  .sidebar {
+    position: fixed;
+    top: 102px;
+    bottom: 0;
+    left: 0;
+    width: 228px;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li{
+  padding-top: 20px;
+  padding-left: 60px;
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+    position: fixed;
+    top: 102px;
+    bottom: 0;
+    left: 228px;
+    width: 100%;
+    padding-top: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    
+    border-right: 1px solid #eee;
+
+}
+
+.nav-main {
+  
+   /* 20px padding + 1px border */
+  
+}
+
+.file_view:hover{
+  background: #f2fcff;
+}
+
+.file_view {
+  padding: 5px;
+  height: 40px;
+  border-bottom: 1px solid #eee;
+  
+}
+
+.file_view>a{
+  padding-right: 10px;
+}
+
+.file_view>.rename_btn{
+  position: fixed;
+  left:800px;
+  display: inline;
+
+}
+
+.delete_file{
+  position: fixed;
+  left:850px;  
+}
+
+.file_view>.download_link{
+  position: fixed;
+  left:770px;
+}
+
+.rename_hidden_folder{
+  display: none;
+  width: 350px;
+}
+
+.rename_hidden_file{
+  display: none;
+  width: 350px;
+}
+
+.rename_hidden{
+  display: none;
+}
+
+.copy_file{
+  position: fixed;
+  left:885px;
+}
+
+
+.paste_file{
+  position: fixed;
+  left:920px;
+}
+
+#file_upload{
+  display: none;
+}
+
+
+#progress{
+  width: 0px;
+  height: 20px;
+  background: #dddd00;
+}
+
+.new_dir{
+  display: none;
+}
