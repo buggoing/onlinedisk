@@ -1,0 +1,38 @@
+          <div class="nav nav-main" id = "nav_main">
+
+          <% for(let i = 0; i< folder_list.length; i++){ %>
+
+            <form class="file_view" id= "folder_view<%- i %>" method="post">
+              
+              &nbsp;&nbsp;<a href="/users/<%- folder_list[i].dir_id %>"><img src="/images/folder-yellow.png"></a>
+              <a class='folder_len' id='filename<%- i %>' href="/users/<%- folder_list[i].dir_id %>"><%- folder_list[i].dir_name %></a>
+              <input type="text" name="rename_folder_old" class="rename_hidden" id="rename_input_old<%- i %>">
+              <input type="text" name="rename_folder" class="rename_hidden_folder" id="rename_input<%- i %>" placeholder='<%- folder_list[i].dir_name %>' required autofocus >
+              <button class="rename_hidden" id='ok_btn<%- i %>' onclick="rename_submit(event, <%- i %>, '<%- folder_list[i].dir_name %>')">确认</button>
+              <button class="rename_hidden" id='off_btn<%- i %>' onclick="rename_off(event,<%- i %>)">取消</button>
+              
+              <a href='' class="rename_btn" id="rename_btn<%- i %>" onclick="rename_btn(event,<%- i %>)">重命名</a>
+              <a href="" class="delete_file" id="delete_folder<%- i %>" onclick="delete_folder(event,'<%- folder_list[i].dir_name %>')">删除</a>
+            </form>
+          <% } %>
+
+          <% for(let j = 0; j< file_list.length; j++){ %>
+
+            <form class="file_view" id= "folder_view<%- i+j %>" method="post">
+              
+              &nbsp;&nbsp;<img src="/images/unknown.jpg">&nbsp;&nbsp;&nbsp;&nbsp;
+              <a class='file_len' id='filename<%- i+j %>'><%- file_list[j].file_name %></a>
+              <input type="text" name="rename_file_old" class="rename_hidden" id="rename_input_old<%- i+j %>">
+              <input type="text" name="rename_file" class="rename_hidden_file" id="rename_input<%- i+j %>" value='<%- file_list[j].file_name %>' required autofocus>
+              <button class="rename_hidden" id='ok_btn<%- i+j %>' onclick="rename_submit(event, <%- i+j %>, '<%- file_list[j].file_name %>')">确认</button>
+              <button class="rename_hidden" id='off_btn<%- i+j %>' onclick="rename_off(event,<%- i+j %>)">取消</button>
+              <a href="/download?file_md5=<%- file_list[j].file_MD5 %>&file_name=<%- file_list[j].file_name %>" class="download_link"><img src="/images/download.jpg"></a>
+              <a href='' class="rename_btn" id="rename_btn<%- i+j %>" onclick="rename_btn(event,<%- i+j %>)">                      重命名</a>
+              <a href="" class="delete_file" id="delete_file<%- j %>" onclick="delete_file(event,'<%- file_list[j].file_name %>')">删除</a>
+              <a href="" class="copy_file" id="copy_file<%- j %>"     onclick="copy_file(event, '<%- file_list[j].file_name %>')"> 复制</a>
+              <a href="" class="paste_file" id="paste_file<%- j %>"   onclick="paste_file(event, '<%- file_list[j].file_name %>')">剪切</a>
+              
+            </form>
+          <% } %>
+          
+          </div>

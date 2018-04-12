@@ -1,11 +1,11 @@
-var mysql  = require('mysql')
+var mysql  = require('mysql');
 
 
 
 var conn = mysql.createConnection({
   host     : 'localhost',
   user     : 'server',
-  password : '***',//your password
+  password : 'G2315',//your password
   database : 'onlinedisk'
 });
 
@@ -17,5 +17,5 @@ conn.connect(function(err){
 	console.log('Connection established');
 });
 
-exports.conn = conn;
+module.exports = conn;
 //conn.end();

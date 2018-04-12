@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "startHttp" : "nodemon ./bin/www-http"
+    "start": "nodemon ./bin/www-http"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -19,6 +18,7 @@
     "morgan": "~1.6.1",
     "multer": "^1.1.0",
     "mysql": "~2.10.2",
+    "nodemon": "^1.11.0",
     "serve-favicon": "~2.3.0"
   }
 }

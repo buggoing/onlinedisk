@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var conn  = require('../mysql').conn;
+var conn  = require('../mysql');
 var crypto = require('crypto');
 var moment = require('moment')
 var multer = require('multer');
@@ -168,6 +168,7 @@ router.get('/users/:path', function(req, res, next) {
 
     else if (req.query.delete_folder_name){//删除文件夹
       var url = '/users/' + req.params.path;
+
       if (req.params.path ==='0'){
        conn.query('delete from dir where dir_user_name = ? and dir_name = ? and dir_pdir is ?', [req.session.user_name, req.query.delete_folder_name, null], function(err){ });       
       }
@@ -178,13 +179,17 @@ router.get('/users/:path', function(req, res, next) {
     }
 
     else{
+
+      console.log('just login', req.params.path);
+      var sql_dir 
+      var sql_file 
       if (req.params.path === '0'){
-        var sql_dir  = "select * from dir where dir_user_name =" +"'" + req.session.user_name +"'" + "and dir_pdir is NULL";
-        var sql_file = "select * from file where file_user_name =" +"'" + req.session.user_name +"'" + "and file_pdir is NULL";
+        sql_dir  = "select * from dir where dir_user_name =" +"'" + req.session.user_name +"'" + "and dir_pdir is NULL";
+        sql_file = "select * from file where file_user_name =" +"'" + req.session.user_name +"'" + "and file_pdir is NULL";
       }
       else{
-        var sql_dir  = "select * from dir where dir_user_name =" +"'" + req.session.user_name +"'" + "and dir_pdir =" + Number(req.params.path);
-        var sql_file = "select * from file where file_user_name =" +"'" + req.session.user_name +"'" + "and file_pdir =" + Number(req.params.path);
+        sql_dir  = "select * from dir where dir_user_name =" +"'" + req.session.user_name +"'" + "and dir_pdir =" + Number(req.params.path);
+        sql_file = "select * from file where file_user_name =" +"'" + req.session.user_name +"'" + "and file_pdir =" + Number(req.params.path);
       }
 
       conn.query(sql_dir, function (err,result0) {
@@ -193,16 +198,19 @@ router.get('/users/:path', function(req, res, next) {
 
       }
       else{
-        conn.query(sql_file, function (err,result)
-          {
+        conn.query(sql_file, function (err,result){
             if (err){
               console.log(err);
             }
             else{
-              res.render('index.html', {user_name:req.session.user_name,
-                                  folder_list: result0,
-                                  file_list:result,
-                                  path:req.params.path});
+              console.log(req.session.user_name, result0, result, typeof(req.params.path));
+              try{
+              res.render('index.html', {
+                  user_name   : req.session.user_name,
+                  folder_list : result0,
+                  file_list   : result,
+                  path_upload : req.params.path});
+              }catch(error){console.log(e)}//try
             }
           });
         
@@ -224,7 +232,7 @@ router.get('/users/:path', function(req, res, next) {
 
 var storage = multer.diskStorage({
   destination: function(req,file,cb){
-    var path = '/onlinedisk/data/' + req.body.file_md5.substring(0, 2).toUpperCase();
+    var path = './file';
     //console.log('path_upload:' + path);
     cb(null,path);
   },
@@ -263,6 +271,7 @@ router.post('/users/:path', upload.single('new_file'),function(req, res, err) {
               console.log(err);
             }
             else{
+              console.log('文件存储成功')
               res.redirect(url);
             }
            });
@@ -339,11 +348,13 @@ router.post('/login', function(req, res, next) {
 
     ip = ip.substring(ip.lastIndexOf(':')+1);
     console.log(ip);
+    console.log(req.body.username);
     conn.query('select * from user where user_name = ?', [req.body.username], function (err,result) {
       if (err){
         console.log(err);
 
       }
+
       else if (result.length){//用户名存在
       	console.log(result[0].user_password);
       	console.log(user_password);
@@ -355,11 +366,12 @@ router.post('/login', function(req, res, next) {
             		console.log(err);
           		res.redirect('/users/0');
         	});
-     	}
-     	else
-     		res.render('login.html',{error:'密码错误'});
+     	  }
+     	  else
+     		   res.render('login.html',{error:'密码错误'});
       }
       else{
+        console.log(result);
         res.render('login.html',{error:'用户不存在'});
       }
     });
@@ -421,7 +433,8 @@ router.post('/register', function(req, res, next) {
 });
 
 router.get('/download', function(req, res, next){
-  var path = '/onlinedisk/data/' + req.query.file_md5.substring(0, 2) + '/' + req.query.file_md5;
+  //var path = './onlinedisk/data/' + req.query.file_md5.substring(0, 2) + '/' + req.query.file_md5;
+  var path = './file/' + req.query.file_md5;
   res.download(path, req.query.file_name, function(err){
     if (err){
       console.log(err);

@@ -1,67 +1,70 @@
-/* ´´½¨Êı¾İ¿â */
+/* åˆ›å»ºæ•°æ®åº“ */
 drop database if exists onlinedisk;
 create database onlinedisk;
 use onlinedisk;
 
-/* ´´½¨ÓÃ»§±í */
+/* åˆ›å»ºç”¨æˆ·è¡¨ */
 drop table if exists user;
 create table user(
-  user_name varchar(16) PRIMARY KEY NOT NULL,/* ÓÃ»§Ãû£¬×î¶à32¸ö×Ö½Ú           */
-  user_password char(41) NOT NULL,           /* ÃÜÂë£¬Ã÷ÎÄÃÜÂë¾­SHA1¼ÓÃÜºóµÄÖµ */
-  user_login datetime NOT NULL,              /* ×¢²áÊ±¼ä£¬YYYY-MM-DD HH:MM:SS  */
-  user_pc enum("Y", "N") NOT NULL,           /* pc¶ËÊÇ·ñµÇÂ¼                   */
-  user_web enum("Y", "N") NOT NULL,          /* web¶ËÊÇ·ñµÇÂ¼                  */
-  user_signup datetime NOT NULL,             /* ×îºóÒ»´ÎµÇÂ¼Ê±¼ä               */
-  user_ip int unsigned NOT NULL              /* ×îºóÒ»´ÎµÇÂ¼ip                 */
+  user_name varchar(16) PRIMARY KEY NOT NULL,
+  user_password char(41) NOT NULL,           
+  user_login datetime NOT NULL,              
+  user_pc enum("Y", "N") NOT NULL,           
+  user_web enum("Y", "N") NOT NULL,          
+  user_signup datetime NOT NULL,             
+  user_ip int unsigned NOT NULL             
 ) engine=InnoDB DEFAULT CHARSET=gbk;
 
-/* ´´½¨Ä¿Â¼±í */
+/* åˆ›å»ºç›®å½•è¡¨ */
 drop table if exists dir;
 create table dir(
-  dir_id bigint PRIMARY KEY AUTO_INCREMENT NOT NULL,/* Ä¿Â¼±àºÅ£¬Ö÷¼ü£¬×Ô¶¯Ôö³¤ */
-  dir_name varchar(255) NOT NULL,                   /* Ä¿Â¼Ãû£¬×î¶à256¸ö×Ö½Ú    */
-  dir_user_name varchar(16) NOT NULL,               /* ËùÊôÓÃ»§Ãû               */
-  dir_pdir bigint,                                  /* ÉÏ¼¶Ä¿Â¼±àºÅ             */
-  FOREIGN KEY (dir_user_name) REFERENCES user(user_name)/* Íâ¼ü */
-    ON DELETE CASCADE /* ¼¶ÁªÉ¾³ı */
-    ON UPDATE CASCADE,/* ¼¶Áª¸üĞÂ */
-  FOREIGN KEY (dir_pdir) REFERENCES dir(dir_id)/* Íâ¼ü */
-    ON DELETE CASCADE /* ¼¶ÁªÉ¾³ı */
+  dir_id bigint PRIMARY KEY AUTO_INCREMENT NOT NULL,/* ç›®å½•ç¼–å·ï¼Œä¸»é”®ï¼Œè‡ªåŠ¨å¢é•¿ */
+  dir_name varchar(255) NOT NULL,                   /* ç›®å½•åï¼Œæœ€å¤š256ä¸ªå­—èŠ‚    */
+  dir_user_name varchar(16) NOT NULL,               /* æ‰€å±ç”¨æˆ·å               */
+  dir_pdir bigint,                                  /* ä¸Šçº§ç›®å½•ç¼–å·             */
+  FOREIGN KEY (dir_user_name) REFERENCES user(user_name)/* å¤–é”® */
+    ON DELETE CASCADE /* çº§è”åˆ é™¤ */
+    ON UPDATE CASCADE,/* çº§è”æ›´æ–° */
+  FOREIGN KEY (dir_pdir) REFERENCES dir(dir_id)/* å¤–é”® */
+    ON DELETE CASCADE /* çº§è”åˆ é™¤ */
 ) engine=InnoDB DEFAULT CHARSET=gbk;
 
-/* ´´½¨ÎÄ¼ş±í */
+/* åˆ›å»ºæ–‡ä»¶è¡¨ */
 drop table if exists file;
 create table file(
-  file_id bigint PRIMARY KEY AUTO_INCREMENT NOT NULL,/* ÎÄ¼ş±àºÅ£¬Ö÷¼ü£¬×Ô¶¯Ôö³¤ */
-  file_name varchar(255) NOT NULL,                   /* ÎÄ¼şÃû£¬×î¶à256¸ö×Ö½Ú    */
-  file_user_name varchar(16) NOT NULL,               /* ËùÊôÓÃ»§Ãû               */
-  file_pdir bigint,                                  /* ÉÏ¼¶Ä¿Â¼±àºÅ             */
-  file_creat datetime NOT NULL,                      /* ´´½¨Ê±¼ä                 */
-  file_MD5 char(32) NOT NULL,                        /* ÎÄ¼şMD5Öµ                */
-  FOREIGN KEY (file_user_name) REFERENCES user(user_name)/* Íâ¼ü */
-    ON DELETE CASCADE /* ¼¶ÁªÉ¾³ı */
-    ON UPDATE CASCADE,/* ¼¶Áª¸üĞÂ */
-  FOREIGN KEY (file_pdir) REFERENCES dir(dir_id)/* Íâ¼ü */
-    ON DELETE CASCADE /* ¼¶ÁªÉ¾³ı */
+  file_id bigint PRIMARY KEY AUTO_INCREMENT NOT NULL,/* æ–‡ä»¶ç¼–å·ï¼Œä¸»é”®ï¼Œè‡ªåŠ¨å¢é•¿ */
+  file_name varchar(255) NOT NULL,                   /* æ–‡ä»¶åï¼Œæœ€å¤š256ä¸ªå­—èŠ‚    */
+  file_user_name varchar(16) NOT NULL,               /* æ‰€å±ç”¨æˆ·å               */
+  file_pdir bigint,                                  /* ä¸Šçº§ç›®å½•ç¼–å·             */
+  file_creat datetime NOT NULL,                      /* åˆ›å»ºæ—¶é—´                 */
+  file_MD5 char(32) NOT NULL,                        /* æ–‡ä»¶MD5å€¼                */
+  FOREIGN KEY (file_user_name) REFERENCES user(user_name)/* å¤–é”® */
+    ON DELETE CASCADE /* çº§è”åˆ é™¤ */
+    ON UPDATE CASCADE,/* çº§è”æ›´æ–° */
+  FOREIGN KEY (file_pdir) REFERENCES dir(dir_id)/* å¤–é”® */
+    ON DELETE CASCADE /* çº§è”åˆ é™¤ */
 ) engine=InnoDB DEFAULT CHARSET=gbk;
 
-/* ´´½¨ÎÄ¼şÊı¾İ±í²¢²åÈë0×Ö½ÚÎÄ¼şÏî */
+/* åˆ›å»ºæ–‡ä»¶æ•°æ®è¡¨å¹¶æ’å…¥0å­—èŠ‚æ–‡ä»¶é¡¹ */
 drop table if exists filedata;
 create table filedata (
-  data_MD5 char(32) PRIMARY KEY NOT NULL,/* ÎÄ¼şmd5Öµ        */
-  data_upload datetime NOT NULL,         /* ÉÏ´«Ê±¼ä         */
-  data_download datetime NOT NULL,       /* ×îºóÒ»´ÎÏÂÔØÊ±¼ä */
-  data_len bigint NOT NULL,              /* ÎÄ¼ş³¤¶È         */
-  data_count int NOT NULL DEFAULT 0      /* ÎÄ¼şÏÂÔØ´ÎÊı     */
+  data_MD5 char(32) PRIMARY KEY NOT NULL,/* æ–‡ä»¶md5å€¼        */
+  data_upload datetime NOT NULL,         /* ä¸Šä¼ æ—¶é—´         */
+  data_download datetime NOT NULL,       /* æœ€åä¸€æ¬¡ä¸‹è½½æ—¶é—´ */
+  data_len bigint NOT NULL,              /* æ–‡ä»¶é•¿åº¦         */
+  data_count int NOT NULL DEFAULT 0      /* æ–‡ä»¶ä¸‹è½½æ¬¡æ•°     */
 ) engine=InnoDB DEFAULT CHARSET=gbk;
 insert into filedata values("D41D8CD98F00B204E9800998ECF8427E", "1970-01-01 00:00:00", "1970-01-01 00:00:00", 0, 0);
 
-/* ´´½¨ÁÙÊ±ÎÄ¼ş±í */
+/* åˆ›å»ºä¸´æ—¶æ–‡ä»¶è¡¨ */
 drop table if exists filetemp;
 create table filetemp(
-  temp_MD5 char(32) PRIMARY KEY NOT NULL,/* ÎÄ¼şmd5Öµ            */
-  temp_time datetime NOT NULL,           /* ×îºóÒ»´ÎÉÏ´«Ê±¼ä     */
-  temp_ip int unsigned NOT NULL,         /* ¸ºÔğÉÏ´«µÄ½ø³ÌµÄµØÖ· */
-  temp_port smallint unsigned NOT NULL   /* ¸ºÔğÉÏ´«µÄ½ø³ÌµÄ¶Ë¿Ú */
+  temp_MD5 char(32) PRIMARY KEY NOT NULL,/* æ–‡ä»¶md5å€¼            */
+  temp_time datetime NOT NULL,           /* æœ€åä¸€æ¬¡ä¸Šä¼ æ—¶é—´     */
+  temp_ip int unsigned NOT NULL,         /* è´Ÿè´£ä¸Šä¼ çš„è¿›ç¨‹çš„åœ°å€ */
+  temp_port smallint unsigned NOT NULL   /* è´Ÿè´£ä¸Šä¼ çš„è¿›ç¨‹çš„ç«¯å£ */
 ) engine=InnoDB DEFAULT CHARSET=gbk;
 
+/* åˆ›å»ºç”¨æˆ·å¹¶æˆäºˆæƒé™ */
+/*grant all privileges on onlinedisk.* to 'server'@'%' identified by 'G2315';   */
+grant all privileges on onlinedisk.* to 'server'@'localhost' identified by 'G2315';
