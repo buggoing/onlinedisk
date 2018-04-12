@@ -7,12 +7,12 @@ use onlinedisk;
 drop table if exists user;
 create table user(
   user_name varchar(16) PRIMARY KEY NOT NULL,
-  user_password char(41) NOT NULL,           
-  user_login datetime NOT NULL,              
-  user_pc enum("Y", "N") NOT NULL,           
-  user_web enum("Y", "N") NOT NULL,          
-  user_signup datetime NOT NULL,             
-  user_ip int unsigned NOT NULL             
+  user_password char(41) NOT NULL,
+  user_login datetime NOT NULL,
+  user_pc enum("Y", "N") NOT NULL,
+  user_web enum("Y", "N") NOT NULL,
+  user_signup datetime NOT NULL,
+  user_ip int unsigned NOT NULL
 ) engine=InnoDB DEFAULT CHARSET=gbk;
 
 /* 创建目录表 */
@@ -66,5 +66,5 @@ create table filetemp(
 ) engine=InnoDB DEFAULT CHARSET=gbk;
 
 /* 创建用户并授予权限 */
-/*grant all privileges on onlinedisk.* to 'server'@'%' identified by 'G2315';   */
-grant all privileges on onlinedisk.* to 'server'@'localhost' identified by 'G2315';
+/*grant all privileges on onlinedisk.* to 'server'@'%' identified by '***';   */
+grant all privileges on onlinedisk.* to 'server'@'localhost' identified by '***';
